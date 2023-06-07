@@ -29,6 +29,7 @@ jobs:
         run: |
           /opt/python/cp39-cp39/bin/pip install --no-cache-dir scikit-build numpy
       - name: get values
+        # The build will not automatically find them.
         run: |
           /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_INCLUDE_DIR={sysconfig.get_path('include')}\")" >> $GITHUB_ENV
           /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_LIBRARY={sysconfig.get_config_var('LIBDIR')}\")" >> $GITHUB_ENV
@@ -38,6 +39,7 @@ jobs:
           BUILD_OPENCV_PYTHON3: 1
           BUILD_OPENCV_PYTHON2: 0
           WITH_IPP: 0
+          WITH_ITT: 0
           WITH_V4L: 0
           WITH_GSTREAMER: 0
           WITH_FFMPEG: 0
@@ -46,11 +48,13 @@ jobs:
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
           PYTHON3_EXECUTABLE: "/opt/python/cp39-cp39/bin/python"
-          CMAKE_ARGS: "-DWITH_IPP=OFF"
+          # The Intel dependencies disallow reverse engineering in their EULA, which might lead to incompatibilities with LGPL libraries.
+          # Therefore exclude them.
+          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF"
         run: |
           cd opencv
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
-          find . -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c "auditwheel repair '{}' -w \$(dirname '{}') --plat 'manylinux2014_x86_64' || { echo 'Repairing wheels failed.'; auditwheel show '{}' }" \;
+          find . -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$1" auditwheel repair "$f" -w \$(dirname "$f") --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' \;
       - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
