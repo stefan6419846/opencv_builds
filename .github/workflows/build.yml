@@ -27,4 +27,18 @@ jobs:
           ref: '72'
           path: 'opencv'
           submodules: true
-      - run: ls -l opencv
+      - name: build
+        env:
+          CMAKE_BUILD_PARALLEL_LEVEL: 2
+          BUILD_OPENCV_PYTHON3: 1
+          BUILD_OPENCV_PYTHON2: 0
+          WITH_IPP: 0
+          WITH_V4L: 0
+          WITH_GSTREAMER: 0
+          WITH_FFMPEG: 0
+          OPENCV_ENABLE_NONFREE: 0
+          ENABLE_JAVA: 0
+          ENABLE_CONTRIB: 0
+          ENABLE_GUI: 0
+        run: |
+          python setup.py bdist_wheel --verbose
