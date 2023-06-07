@@ -29,10 +29,10 @@ jobs:
           submodules: true
       - name: install build requirements
         run: |
-          pip install scikit-build
+          pip install scikit-build numpy
       - name: build
         env:
-          CMAKE_BUILD_PARALLEL_LEVEL: 2
+          CMAKE_BUILD_PARALLEL_LEVEL: 3
           BUILD_OPENCV_PYTHON3: 1
           BUILD_OPENCV_PYTHON2: 0
           WITH_IPP: 0
