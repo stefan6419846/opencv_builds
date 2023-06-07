@@ -31,8 +31,9 @@ jobs:
         run: |
           pip install scikit-build numpy
       - name: build
+        uses: RalfG/python-wheels-manylinux-build@v0.6.0
         env:
-          CMAKE_BUILD_PARALLEL_LEVEL: 2
+          CMAKE_BUILD_PARALLEL_LEVEL: 4
           BUILD_OPENCV_PYTHON3: 1
           BUILD_OPENCV_PYTHON2: 0
           WITH_IPP: 0
@@ -43,12 +44,11 @@ jobs:
           ENABLE_JAVA: 0
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
-        run: |
-          cd opencv
-          python setup.py bdist_wheel --verbose
-      - name: list licenses
-        run: |
-          cd opencv/_skbuild/linux*/cmake-install/share/licenses && ls -l
+        with:
+          python-versions: 'cp39-cp39'
+          pre-build-command: 'cd opencv'
+          pip-wheel-args: '-w ./dist --no-deps'
+      - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
         with:
