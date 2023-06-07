@@ -46,10 +46,11 @@ jobs:
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
           PYTHON3_EXECUTABLE: "/opt/python/cp39-cp39/bin/python"
+          CMAKE_ARGS: "-DWITH_IPP=OFF"
         run: |
           cd opencv
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
-          find . -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c "auditwheel repair '{}' -w \$(dirname '{}') --plat 'manylinux2014_x86_64' || { echo 'Repairing wheels failed.'; auditwheel show '{}' &>> "$failed_wheels"; }" \;
+          find . -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c "auditwheel repair '{}' -w \$(dirname '{}') --plat 'manylinux2014_x86_64' || { echo 'Repairing wheels failed.'; auditwheel show '{}' }" \;
       - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
