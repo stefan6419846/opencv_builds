@@ -28,6 +28,10 @@ jobs:
       - name: install build requirements
         run: |
           /opt/python/cp39-cp39/bin/pip install --no-cache-dir scikit-build numpy
+      - name: get values
+        run: |
+          /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_INCLUDE_DIR={sysconfig.get_path('include')}\")" >> $GITHUB_ENV
+          /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_LIBRARY={sysconfig.get_config_var('LIBDIR')}\")" >> $GITHUB_ENV
       - name: build
         env:
           CMAKE_BUILD_PARALLEL_LEVEL: 4
