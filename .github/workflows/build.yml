@@ -1,0 +1,30 @@
+name: Build
+
+on:
+ - workflow_dispatch
+ - push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install wheel package
+        run: |
+          python -m pip install --upgrade pip
+          pip install wheel
+      - uses: actions/checkout@v3
+        with:
+          repository: 'opencv/opencv-python'
+          ref: '72'
+          path: 'opencv'
+          submodules: true
+      - run: ls -l opencv
