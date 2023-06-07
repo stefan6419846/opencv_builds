@@ -46,7 +46,8 @@ jobs:
           ENABLE_GUI: 0
         with:
           python-versions: 'cp39-cp39'
-          pre-build-command: 'cd opencv'
+          # https://github.com/opencv/opencv-python/blob/474a1cc0ebf2086c596b60c050a9e1af658ff380/setup.py#L51
+          pre-build-command: 'cd opencv && rm -rf .git'
           pip-wheel-args: '-w ./dist --no-deps'
       - run: ls -l opencv/dist
       - name: upload wheel
