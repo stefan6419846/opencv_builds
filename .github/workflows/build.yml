@@ -68,11 +68,11 @@ jobs:
         run: |
           cd opencv
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
-          find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'auditwheel repair "{}" -w "$(dirname "{}")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "{}"; }' \;
+          find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$1"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' \;
       - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
         with:
           name: wheels
           path: |
-            opencv/dist/*.whl
+            opencv/dist/*manylinux*.whl
