@@ -27,6 +27,9 @@ jobs:
           ref: '72'
           path: 'opencv'
           submodules: true
+      - name: install build requirements
+        run: |
+          pip install scikit-build
       - name: build
         env:
           CMAKE_BUILD_PARALLEL_LEVEL: 2
