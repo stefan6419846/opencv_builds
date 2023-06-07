@@ -50,7 +50,8 @@ jobs:
           PYTHON3_EXECUTABLE: "/opt/python/cp39-cp39/bin/python"
           # The Intel dependencies (especially IPP) disallow reverse engineering in their EULA,
           # which might lead to incompatibilities with LGPL libraries.
-          # Therefore exclude them.
+          # Although https://github.com/OpenHFT/Chronicle-Map/issues/141 seems to indicate otherwise.
+          # Therefore just exclude them for now.
           # 
           # Reference: Go to
           #    https://github.com/opencv/opencv_3rdparty/blob/ippicv/master_20230330/ippicv/ippicv_2021.8_lnx_intel64_20230330_general.tgz
@@ -59,11 +60,11 @@ jobs:
           # > No reverse engineering, decompilation, or disassembly of the Software is
           # > permitted, nor any modification or alteration of the Software or its operation
           # > at any time, including during execution.
-          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF"
+          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF"
         run: |
           cd opencv
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
-          find . -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$1" auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' \;
+          find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$1" auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' \;
       - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
