@@ -32,7 +32,7 @@ jobs:
           pip install scikit-build numpy
       - name: build
         env:
-          CMAKE_BUILD_PARALLEL_LEVEL: 3
+          CMAKE_BUILD_PARALLEL_LEVEL: 2
           BUILD_OPENCV_PYTHON3: 1
           BUILD_OPENCV_PYTHON2: 0
           WITH_IPP: 0
@@ -46,3 +46,12 @@ jobs:
         run: |
           cd opencv
           python setup.py bdist_wheel --verbose
+      - name: list licenses
+        run: |
+          cd opencv/_skbuild/linux*/cmake-install/share/licenses && ls -l
+      - name: upload wheel
+        uses: actions/upload-artifact@v3
+        with:
+          name: wheels
+          path: |
+            opencv/dist/*.whl
