@@ -41,4 +41,5 @@ jobs:
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
         run: |
+          cd opencv
           python setup.py bdist_wheel --verbose
