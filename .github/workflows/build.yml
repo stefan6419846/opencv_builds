@@ -75,4 +75,4 @@ jobs:
         with:
           name: wheels
           path: |
-            opencv/dist/*manylinux*.whl
+            opencv/dist/*.whl
