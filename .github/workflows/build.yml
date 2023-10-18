@@ -14,12 +14,12 @@ jobs:
         python-version: ["3.9"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: install wheel package
         run: |
           /opt/python/cp39-cp39/bin/pip install --upgrade --no-cache-dir pip
           /opt/python/cp39-cp39/bin/pip install --no-cache-dir wheel
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: 'opencv/opencv-python'
           ref: '78'
