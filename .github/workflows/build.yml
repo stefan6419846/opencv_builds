@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: 'opencv/opencv-python'
-          ref: '72'
+          ref: '78'
           path: 'opencv'
           submodules: true
       - name: install build requirements
