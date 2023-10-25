@@ -70,7 +70,7 @@ jobs:
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
           ls -l dist
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl"
-          find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$1"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' \;
+          find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$0"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' {} \;
       - run: ls -l opencv/dist
       - name: upload wheel
         uses: actions/upload-artifact@v3
