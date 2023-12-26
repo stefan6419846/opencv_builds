@@ -64,7 +64,7 @@ jobs:
           # Modules: https://docs.opencv.org/4.x/
           # Flags: https://docs.opencv.org/4.x/db/d05/tutorial_config_reference.html
           # `gapi` requires `videoio`.
-          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF"
+          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF -DWITH_V4L=OFF -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF"
         run: |
           cd opencv
           /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
