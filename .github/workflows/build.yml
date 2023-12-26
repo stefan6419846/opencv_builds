@@ -67,7 +67,8 @@ jobs:
           CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF -DWITH_V4L=OFF -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF"
         run: |
           cd opencv
-          /opt/python/cp39-cp39/bin/python -m pip wheel --wheel-dir dist --verbose .
+          /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
+          # /opt/python/cp39-cp39/bin/python -m pip wheel --wheel-dir dist --verbose .
           ls -l dist
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl"
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$0"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' {} \;
