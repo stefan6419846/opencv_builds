@@ -84,6 +84,6 @@ jobs:
       - name: upload wheel
         uses: actions/upload-artifact@v4
         with:
-          name: "wheels_${{ matrix.python_Verbose }}"
+          name: "wheels_${{ matrix.python_verbose }}"
           path: |
             opencv/dist/*.whl
