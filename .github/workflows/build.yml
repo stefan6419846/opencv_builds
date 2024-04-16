@@ -11,15 +11,18 @@ jobs:
       image: quay.io/pypa/manylinux2014_x86_64
     strategy:
       matrix:
-        python-version: ["3.9"]
+        python: ["3.9"]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: set interpreter path
+        run: |
+          echo "INTERPRETER_PATH=cp${{ matrix.python-version }}-cp${{ matrix.python }}" >> $GITHUB_ENV
       - name: install wheel package
         run: |
-          /opt/python/cp39-cp39/bin/pip install --upgrade --no-cache-dir pip
-          /opt/python/cp39-cp39/bin/pip install --no-cache-dir wheel
-      - uses: actions/checkout@v3
+          /opt/python/$INTERPRETER_PATH/bin/pip install --upgrade --no-cache-dir pip
+          /opt/python/$INTERPRETER_PATH/bin/pip install --no-cache-dir wheel
+      - uses: actions/checkout@v4
         with:
           repository: 'opencv/opencv-python'
           ref: '80'
@@ -27,12 +30,12 @@ jobs:
           submodules: true
       - name: install build requirements
         run: |
-          /opt/python/cp39-cp39/bin/pip install --no-cache-dir scikit-build numpy
+          /opt/python/$INTERPRETER_PATH/bin/pip install --no-cache-dir scikit-build numpy
       - name: get values
         # The build will not automatically find them.
         run: |
-          /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_INCLUDE_DIR={sysconfig.get_path('include')}\")" >> $GITHUB_ENV
-          /opt/python/cp39-cp39/bin/python -c "import sysconfig; print(f\"PYTHON3_LIBRARY={sysconfig.get_config_var('LIBDIR')}\")" >> $GITHUB_ENV
+          /opt/python/$INTERPRETER_PATH/bin/python -c "import sysconfig; print(f\"PYTHON3_INCLUDE_DIR={sysconfig.get_path('include')}\")" >> $GITHUB_ENV
+          /opt/python/$INTERPRETER_PATH/bin/python -c "import sysconfig; print(f\"PYTHON3_LIBRARY={sysconfig.get_config_var('LIBDIR')}\")" >> $GITHUB_ENV
       - name: build
         env:
           CMAKE_BUILD_PARALLEL_LEVEL: 4
@@ -47,7 +50,7 @@ jobs:
           ENABLE_JAVA: 0
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
-          PYTHON3_EXECUTABLE: "/opt/python/cp39-cp39/bin/python"
+          PYTHON3_EXECUTABLE: "/opt/python/$INTERPRETER_PATH/bin/python"
           # The Intel dependencies (especially IPP) disallow reverse engineering in their EULA,
           # which might lead to incompatibilities with LGPL libraries.
           # Although https://github.com/OpenHFT/Chronicle-Map/issues/141 seems to indicate otherwise.
@@ -67,15 +70,15 @@ jobs:
           CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF -DWITH_V4L=OFF -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF"
         run: |
           cd opencv
-          /opt/python/cp39-cp39/bin/python setup.py bdist_wheel --verbose
-          # /opt/python/cp39-cp39/bin/python -m pip wheel --wheel-dir dist --verbose .
+          /opt/python/$INTERPRETER_PATH/bin/python setup.py bdist_wheel --verbose
+          # /opt/python/$INTERPRETER_PATH/bin/python -m pip wheel --wheel-dir dist --verbose .
           ls -l dist
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl"
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$0"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux2014_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' {} \;
       - run: ls -l opencv/dist
       - name: upload wheel
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: "wheels_${{ matrix.python }}"
           path: |
             opencv/dist/*.whl
