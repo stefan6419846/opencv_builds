@@ -11,13 +11,13 @@ jobs:
       image: quay.io/pypa/manylinux_2_28_x86_64
     strategy:
       matrix:
-        python: ["3.9"]
+        python: ["39"]
 
     steps:
       - uses: actions/checkout@v4
       - name: set interpreter path
         run: |
-          echo "INTERPRETER_PATH=cp${{ matrix.python-version }}-cp${{ matrix.python }}" >> $GITHUB_ENV
+          echo "INTERPRETER_PATH=cp${{ matrix.python }}-cp${{ matrix.python }}" >> $GITHUB_ENV
       - name: install wheel package
         run: |
           /opt/python/$INTERPRETER_PATH/bin/pip install --upgrade --no-cache-dir pip
