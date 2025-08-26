@@ -19,7 +19,7 @@ jobs:
             python_verbose: '3.11'
     name: "Build with Python ${{ matrix.python_verbose }}"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: set interpreter path
         run: |
           echo "INTERPRETER_PATH=cp${{ matrix.python }}-cp${{ matrix.python }}" >> $GITHUB_ENV
@@ -27,7 +27,7 @@ jobs:
         run: |
           /opt/python/$INTERPRETER_PATH/bin/pip install --upgrade --no-cache-dir pip
           /opt/python/$INTERPRETER_PATH/bin/pip install --no-cache-dir wheel
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: 'opencv/opencv-python'
           ref: '88'
