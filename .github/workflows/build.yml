@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: 'opencv/opencv-python'
-          ref: '86'
+          ref: '88'
           path: 'opencv'
           submodules: true
       - name: install build requirements
