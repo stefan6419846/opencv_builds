@@ -13,10 +13,12 @@ jobs:
       matrix:
         include:
           # TODO: Enforce specific `numpy` versions to avoid conflicts.
-          - python: 39
-            python_verbose: '3.9'
           - python: 311
             python_verbose: '3.11'
+          - python: 312
+            python_verbose: '3.12'
+          - python: 313
+            python_verbose: '3.13'
     name: "Build with Python ${{ matrix.python_verbose }}"
     steps:
       - uses: actions/checkout@v5
