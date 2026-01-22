@@ -20,7 +20,7 @@ jobs:
           - python: 313
             python_verbose: '3.13'
           - python: 314
-            python_verbose: '3.15'
+            python_verbose: '3.14'
     name: "Build with Python ${{ matrix.python_verbose }}"
     steps:
       - uses: actions/checkout@v6
