@@ -30,6 +30,8 @@ jobs:
     name: "Build with Python ${{ matrix.python_verbose }}"
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        with:
+          persist-credentials: false
       - name: set interpreter path
         run: |
           echo "INTERPRETER_PATH=cp${{ matrix.python }}-cp${{ matrix.python }}" >> $GITHUB_ENV
