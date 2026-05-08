@@ -43,6 +43,7 @@ jobs:
           ref: '92'
           path: 'opencv'
           submodules: true
+          persist-credentials: false
       - name: install build requirements
         run: |
           /opt/python/$INTERPRETER_PATH/bin/pip install --no-cache-dir scikit-build numpy
