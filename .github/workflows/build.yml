@@ -23,7 +23,7 @@ jobs:
             python_verbose: '3.14'
     name: "Build with Python ${{ matrix.python_verbose }}"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
       - name: set interpreter path
         run: |
           echo "INTERPRETER_PATH=cp${{ matrix.python }}-cp${{ matrix.python }}" >> $GITHUB_ENV
@@ -31,7 +31,7 @@ jobs:
         run: |
           /opt/python/$INTERPRETER_PATH/bin/pip install --upgrade --no-cache-dir pip
           /opt/python/$INTERPRETER_PATH/bin/pip install --no-cache-dir wheel
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
         with:
           repository: 'opencv/opencv-python'
           ref: '92'
@@ -86,7 +86,7 @@ jobs:
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$0"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux_2_28_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' {} \;
       - run: ls -l opencv/dist
       - name: upload wheel
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: "wheels_${{ matrix.python_verbose }}"
           path: |
