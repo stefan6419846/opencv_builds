@@ -70,6 +70,7 @@ jobs:
           ENABLE_JAVA: 0
           ENABLE_CONTRIB: 0
           ENABLE_GUI: 0
+          DOBSENSOR_USE_ORBBEC_SDK: 0
           PYTHON3_EXECUTABLE: "/opt/python/$INTERPRETER_PATH/bin/python"
           # The Intel dependencies (especially IPP) disallow reverse engineering in their EULA,
           # which might lead to incompatibilities with LGPL libraries.
@@ -86,8 +87,9 @@ jobs:
           #
           # Modules: https://docs.opencv.org/4.x/
           # Flags: https://docs.opencv.org/4.x/db/d05/tutorial_config_reference.html
+          #        https://docs.opencv.org/5.0/tutorials/introduction/config_reference/config_reference.html
           # `gapi` requires `videoio`.
-          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF -DWITH_V4L=OFF -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF"
+          CMAKE_ARGS: "-DWITH_IPP=OFF -DWITH_ITT=OFF -DBUILD_opencv_highgui=OFF -DWITH_V4L=OFF -DWITH_FFMPEG=OFF -DWITH_GSTREAMER=OFF -DOBSENSOR_USE_ORBBEC_SDK=OFF -DVIDEOIO_ENABLE_PLUGINS=OFF"
         run: |
           cd opencv
           /opt/python/$INTERPRETER_PATH/bin/python setup.py bdist_wheel --verbose
