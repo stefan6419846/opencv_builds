@@ -99,7 +99,7 @@ jobs:
           find dist/ -type f -iregex ".*-[manylinux|linux].*\.whl" -exec bash -c 'f="$0"; auditwheel repair "$f" -w "$(dirname "$f")" --plat "manylinux_2_28_x86_64" || { echo "Repairing wheels failed."; auditwheel show "$f"; }' {} \;
       - run: ls -l opencv/dist
       - name: upload wheel
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
           name: "wheels_${{ matrix.python_verbose }}"
           path: |
